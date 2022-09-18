@@ -5,7 +5,6 @@
 #include "Lab3.h"
 
 
-/* returns factorial of n */
 int factorialOf(int n) {
     int result = 1;
     if(n >= 0) {
@@ -16,7 +15,6 @@ int factorialOf(int n) {
 }
 
 
-/* checks if n is strong number or not */
 bool isStrongNumber(int n) {
     int sumOfDigits = 0, original = n;
 
@@ -29,7 +27,6 @@ bool isStrongNumber(int n) {
 }
 
 
-/* print strong numbers from (int) n to (int) m */
 void strongNumber() {
     int n, m;
     printf("Starting range  of number: ");
@@ -50,7 +47,8 @@ void strongNumber() {
     }
 
 }
-/* prints elements [0, 999] of array without duplicates*/
+
+
 void deleteDuplicate() {
     int size = 0;
 
@@ -67,6 +65,100 @@ void deleteDuplicate() {
         if(array[input] == 0) {
             printf("%d ", input);
             array[input] = 1;
+        }
+    }
+}
+
+
+void frequencyOf( char *str, int* occurance) {
+    char* letter = str;
+    while ((*letter) != '\0') {
+        if(*letter-97 >= 0 && *letter-97 <= 26)
+            occurance[*letter-97] += 1;
+        letter++;
+    }
+}
+
+
+void alphabetic(char* str)
+{
+    char onlyAphabetic[1000] = {'\0'};
+    int j = 0;
+    for (char *i = str; *i != '\0'; i++) {
+        if((*i >= 65 && *i <= 91) || *i >= 97 && *i <= 122) onlyAphabetic[j++] = *i;
+    }
+    strcpy(str, onlyAphabetic);
+}
+
+
+void lower(char* str) {
+    for (char *i = str; *i != '\0'; i++) {
+        *i = tolower(*i);
+    }
+}
+
+
+void horizontalHistogram() {
+    char str[1000] = {'\0'};
+    int occurance[26] = {0};
+    bool printed[26] = {false};
+    scanf("%[^\n]", str);
+
+    lower(str);
+
+    alphabetic(str);
+
+    frequencyOf(str, occurance);
+
+    for (char *i = str; *i != '\0'; i++) {
+        if((*i-97) >= 0 && (*i-97) <= 26 && !printed[*i-97]) {
+            printf("%c ", *i);
+            printed[*i-97] = true;
+        }
+    }
+    printf("\n");
+    bool allZero = true;
+    while (allZero) {
+        allZero = false;
+        bool printed[26] = {false};
+        for (char *i = str; *i != '\0'; i++) {
+            if(occurance[*i-97] > 0) {
+                if(!printed[*i-97]){
+                    printf("* ");
+                    occurance[*i-97] -= 1;
+                    allZero += occurance[*i-97];
+                    printed[*i-97] = true;
+                }
+            }
+            else if(occurance[*i-97] == 0 && !printed[*i-97]) {
+                printf("  ");
+                printed[*i-97] = true;
+            }
+        }
+        printf("\n");
+    }
+}
+
+
+void verticalHistogram() {
+    char str[1000] = {'\0'};
+    int occurance[26] = {0};
+
+    scanf("%[^\n]", str);
+
+    lower(str);
+
+    alphabetic(str);
+
+    frequencyOf(str, occurance);
+
+    for (char *i = str; *i != '\0'; i++) {
+        if((*i-97) >= 0 && (*i-97) <= 26 && occurance[*i-97] != 0) {
+            printf("%c ", *i);
+            for (;occurance[*i-97]!= 0; occurance[*i-97] -= 1) {
+                printf("*");
+            }
+            printf("\n");
         }
     }
 }

@@ -54,3 +54,4 @@ dkms.conf
 #ignoring file
 .vs/
 .vscode/
+.idea/
