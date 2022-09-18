@@ -1,9 +1,8 @@
 //
-// Created by MSI on 9/18/2022.
+// Created by Rizo11 on 9/18/2022.
 //
 
 #include "Lab3.h"
-
 
 int factorialOf(int n) {
     int result = 1;
@@ -70,11 +69,11 @@ void deleteDuplicate() {
 }
 
 
-void frequencyOf( char *str, int* occurance) {
+void frequencyOf( char *str, int* occurrence) {
     char* letter = str;
     while ((*letter) != '\0') {
         if(*letter-97 >= 0 && *letter-97 <= 26)
-            occurance[*letter-97] += 1;
+            occurrence[*letter-97] += 1;
         letter++;
     }
 }
@@ -82,12 +81,12 @@ void frequencyOf( char *str, int* occurance) {
 
 void alphabetic(char* str)
 {
-    char onlyAphabetic[1000] = {'\0'};
+    char onlyAlphabetic[1000] = {'\0'};
     int j = 0;
     for (char *i = str; *i != '\0'; i++) {
-        if((*i >= 65 && *i <= 91) || *i >= 97 && *i <= 122) onlyAphabetic[j++] = *i;
+        if((*i >= 65 && *i <= 91) || *i >= 97 && *i <= 122) onlyAlphabetic[j++] = *i;
     }
-    strcpy(str, onlyAphabetic);
+    strcpy(str, onlyAlphabetic);
 }
 
 
@@ -100,7 +99,7 @@ void lower(char* str) {
 
 void horizontalHistogram() {
     char str[1000] = {'\0'};
-    int occurance[26] = {0};
+    int occurrence[26] = {0};
     bool printed[26] = {false};
     scanf("%[^\n]", str);
 
@@ -108,7 +107,7 @@ void horizontalHistogram() {
 
     alphabetic(str);
 
-    frequencyOf(str, occurance);
+    frequencyOf(str, occurrence);
 
     for (char *i = str; *i != '\0'; i++) {
         if((*i-97) >= 0 && (*i-97) <= 26 && !printed[*i-97]) {
@@ -122,15 +121,15 @@ void horizontalHistogram() {
         allZero = false;
         bool printed[26] = {false};
         for (char *i = str; *i != '\0'; i++) {
-            if(occurance[*i-97] > 0) {
+            if(occurrence[*i-97] > 0) {
                 if(!printed[*i-97]){
                     printf("* ");
-                    occurance[*i-97] -= 1;
-                    allZero += occurance[*i-97];
+                    occurrence[*i-97] -= 1;
+                    allZero += occurrence[*i-97];
                     printed[*i-97] = true;
                 }
             }
-            else if(occurance[*i-97] == 0 && !printed[*i-97]) {
+            else if(occurrence[*i-97] == 0 && !printed[*i-97]) {
                 printf("  ");
                 printed[*i-97] = true;
             }
@@ -142,7 +141,7 @@ void horizontalHistogram() {
 
 void verticalHistogram() {
     char str[1000] = {'\0'};
-    int occurance[26] = {0};
+    int occurrence[26] = {0};
 
     scanf("%[^\n]", str);
 
@@ -150,12 +149,68 @@ void verticalHistogram() {
 
     alphabetic(str);
 
-    frequencyOf(str, occurance);
+    frequencyOf(str, occurrence);
 
     for (char *i = str; *i != '\0'; i++) {
-        if((*i-97) >= 0 && (*i-97) <= 26 && occurance[*i-97] != 0) {
+        if(occurrence[*i-97] != 0) {
             printf("%c ", *i);
-            for (;occurance[*i-97]!= 0; occurance[*i-97] -= 1) {
+            for (;occurrence[*i-97]!= 0; occurrence[*i-97] -= 1) {
+                printf("*");
+            }
+            printf("\n");
+        }
+    }
+}
+
+
+void swap(int* a, int* b)
+{
+    int tmp = *a;
+    *a = *b;
+    *b = tmp;
+}
+
+
+void sortFreqDesAlph(int *frequency, int* letters)
+{
+    for (int i = 0; i < 25; i++) {
+        for (int j = 0; j < 25-i; j++) {
+            if(frequency[j] < frequency[j+1]) {
+                swap(&frequency[j], &frequency[j+1]);
+                swap(&letters[j], &letters[j+1]);
+            } else if(frequency[j] == frequency[j+1]) {
+                if(letters[j] > letters[j+1]) {
+                    swap(&frequency[j], &frequency[j+1]);
+                    swap(&letters[j], &letters[j+1]);
+                }
+            }
+        }
+    }
+}
+
+
+void sortedVerticalHistogram()
+{
+    char str[1000] = {'\0'};
+    int occurrence[26] = {0}, letters[26] = {0-25};
+
+    for (int i = 0; i < 26; i++) {
+        letters[i] = i;
+    }
+    scanf("%[^\n]", str);
+
+    lower(str);
+
+    alphabetic(str);
+
+    frequencyOf(str, occurrence);
+
+    sortFreqDesAlph(occurrence, letters);
+
+    for (int i = 0; i < 26; i++) {
+        if(occurrence[i]) {
+            printf("%c ", letters[i]+97);
+            for (int j = 0; j < occurrence[i]; j++) {
                 printf("*");
             }
             printf("\n");
