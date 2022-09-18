@@ -29,7 +29,7 @@ bool isStrongNumber(int n) {
 }
 
 
-/*print strong numbers from (int) n to (int) m*/
+/* print strong numbers from (int) n to (int) m */
 void strongNumber() {
     int n, m;
     printf("Starting range  of number: ");
@@ -49,4 +49,24 @@ void strongNumber() {
         }
     }
 
+}
+/* prints elements [0, 999] of array without duplicates*/
+void deleteDuplicate() {
+    int size = 0;
+
+    printf("Size of array: ");
+    scanf("%d", &size);
+
+    int array[1000] = {[0 ... 999] = 0};
+//    int array[1000] = {0};
+//    int array[1000];
+//    memset(array, 0, size);
+    for (int i = 0; i < size; ++i) {
+        int input = 0;
+        scanf("%d", &input);
+        if(array[input] == 0) {
+            printf("%d ", input);
+            array[input] = 1;
+        }
+    }
 }
