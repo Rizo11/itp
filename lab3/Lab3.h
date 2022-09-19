@@ -58,4 +58,10 @@ void sortFreqDesAlph(int *frequency, int* letters);
 /* swaps the values of a and b*/
 void swap(int* a, int* b);
 
+/* finds 1-3 symbol long user password using brute force */
+void findPassswordBF();
+
+/* finds same string using brude force*/
+void bfSearch(char userPassword[])
+
 #endif //LAB3_LAB3_H

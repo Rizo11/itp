@@ -217,3 +217,41 @@ void sortedVerticalHistogram()
         }
     }
 }
+
+
+void bfSearch(char userPassword[])
+{
+    char guess[4];
+    int len = 0;
+    for (;userPassword[len] != '\0'; len++);
+    for (char j = 32; j < 127; j++) {
+        for (char k = 32; k < 127; k++) {
+            for (char m = 32; m < 127; m++) {
+                guess[0] = j;
+                if(len == 1) {
+                    guess[1] = '\0';
+                } else {
+                    guess[1] = k;
+                    if(len == 2) {
+                        guess[2] = '\0';
+                    } else {
+                        guess[2] = m;
+                        guess[3] = '\0';
+                    }
+                }
+                if(!strcmp(guess, userPassword)) {
+                    printf("guess=%s. User=%s.\n", guess, userPassword);
+                    return;
+                }
+            }
+        }
+    }
+}
+
+void findPassswordBF()
+{
+    char userPassword[4];
+    printf("enter user password: ");
+    scanf("%[^\n]", userPassword);
+    bfsearch(userPassword);
+}
