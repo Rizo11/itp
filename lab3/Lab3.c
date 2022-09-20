@@ -248,10 +248,44 @@ void bfSearch(char userPassword[])
     }
 }
 
+
 void findPassswordBF()
 {
     char userPassword[4];
     printf("enter user password: ");
     scanf("%[^\n]", userPassword);
-    bfsearch(userPassword);
+    bfSearch(userPassword);
+}
+
+
+void getMatrix(int* array, int rows ,int columns)
+{
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            scanf("%d", ((array+i*rows) + j));
+            printf("%d ", *((array+i*rows) + j));
+        }
+        printf("\n");
+    }
+}
+
+
+void printMatrix(int* array, int rows, int columns)
+{
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+//            printf("%d", *((array+i*rows) + j));
+            printf("%d:%d=%d ", i, j, *((array+i*columns) + j));
+        }
+        printf("\n");
+    }
+}
+
+
+void print2DArray()
+{
+    int rows = 2, columns = 3;
+    int matrix[rows][columns];
+    printf("Matrix is %d by %d. Enter its elements:\n", rows, columns);
+    getMatrix( (int *) matrix, rows, columns);
 }

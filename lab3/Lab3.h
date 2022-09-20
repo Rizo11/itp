@@ -62,6 +62,15 @@ void swap(int* a, int* b);
 void findPassswordBF();
 
 /* finds same string using brude force*/
-void bfSearch(char userPassword[])
+void bfSearch(char userPassword[]);
+
+/* I/O 2d 3x4 array using pointers */
+void print2DArray();
+
+/* read rows by column matrix */
+void getMatrix(int* array, int rows ,int columns);
+
+/* prints 1 - n numbers in pyramid */
+void numberPyramid();
 
 #endif //LAB3_LAB3_H
