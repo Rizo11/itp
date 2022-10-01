@@ -1,0 +1,10 @@
+^D:\INNO\ITP\VSCODELIB\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/inno/itp/vsCodeLib -BD:/inno/itp/vsCodeLib/build --check-stamp-file D:/inno/itp/vsCodeLib/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

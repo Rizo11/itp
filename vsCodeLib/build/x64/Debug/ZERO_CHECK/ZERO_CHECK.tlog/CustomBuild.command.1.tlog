@@ -1,0 +1,10 @@
+^D:\INNO\ITP\VSCODELIB\BUILD\CMAKEFILES\88040DC6FCDD7EA6E75C27663E082893\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/inno/itp/vsCodeLib -BD:/inno/itp/vsCodeLib/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/inno/itp/vsCodeLib/build/hello.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

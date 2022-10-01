@@ -1,0 +1,5 @@
+D:/inno/itp/vsCodeLib/build/CMakeFiles/hello.dir
+D:/inno/itp/vsCodeLib/build/CMakeFiles/message-objs.dir
+D:/inno/itp/vsCodeLib/build/CMakeFiles/message-a.dir
+D:/inno/itp/vsCodeLib/build/CMakeFiles/ALL_BUILD.dir
+D:/inno/itp/vsCodeLib/build/CMakeFiles/ZERO_CHECK.dir
