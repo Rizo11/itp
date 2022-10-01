@@ -1,0 +1,10 @@
+^D:\INNO\ITP\LAB5\BUILD\CMAKEFILES\C6CD2D31D5C1848CF0C3AF66556E5809\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/inno/itp/lab5 -BD:/inno/itp/lab5/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/inno/itp/lab5/build/lab5.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

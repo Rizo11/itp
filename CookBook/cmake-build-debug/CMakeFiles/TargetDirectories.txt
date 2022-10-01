@@ -1,0 +1,5 @@
+D:/inno/itp/CookBook/cmake-build-debug/CMakeFiles/CookBook.dir
+D:/inno/itp/CookBook/cmake-build-debug/CMakeFiles/message-objs.dir
+D:/inno/itp/CookBook/cmake-build-debug/CMakeFiles/message-a.dir
+D:/inno/itp/CookBook/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/inno/itp/CookBook/cmake-build-debug/CMakeFiles/rebuild_cache.dir

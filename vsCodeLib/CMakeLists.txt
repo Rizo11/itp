@@ -18,7 +18,7 @@ add_library(message-objs
 
 target_compile_options(message-objs
     PRIVATE
-    -Wall -fpic
+    -Wall
 )
 
 if(USE_STATIC)
@@ -31,8 +31,7 @@ if(USE_STATIC)
 else()
     add_library(message-so
     SHARED
-        $<TARGEET_OBJECTS:message-objs>
+        $<TARGET_OBJECTS:message-objs>
     )
     target_link_libraries(hello message-so)
-
 endif()

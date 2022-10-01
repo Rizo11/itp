@@ -1,0 +1,3 @@
+D:/inno/itp/lab5/build/CMakeFiles/lab5.dir
+D:/inno/itp/lab5/build/CMakeFiles/ALL_BUILD.dir
+D:/inno/itp/lab5/build/CMakeFiles/ZERO_CHECK.dir
