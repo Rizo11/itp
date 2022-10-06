@@ -29,4 +29,6 @@ flip_visibility Alaa
 attack Mohamad Alexandr
 attack Munir Mikhail
 attack Munir Alexandr
-attack Munir Alaad
+attack Munir Alaa
+heal Munir Munir
+healt Alaa Munir
