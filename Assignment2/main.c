@@ -5,7 +5,7 @@
 #define OUTPUT "output.txt"
 FILE* input;
 FILE* output = NULL;
-int n_teams = 0, S_k = 0;
+int n_teams = 0, S_k = 0, n_of_actions = 0;
 typedef enum {name = 1, action, visib, flip, attack, heal, super} string_type;
 typedef enum {false = 0, true = 1} bool;
 bool error = false;
@@ -235,6 +235,7 @@ void read_inputs(team* teams) {
         teams[team_number].team_total += player_power;
         n_of_players += 1;
     }
+
     if(n_of_players != m_of_members) {
         write_to_file(NULL, -1);
         return;
@@ -271,6 +272,7 @@ void read_actions(team* teams) {
 
         // attack action
         if(check_action(player_action) == attack) {
+            n_of_actions += 1;
             // read predator's, prey's names
             char predator_name[1000] = {'\0'};
             char prey_name[1000] = {'\0'};
@@ -350,6 +352,7 @@ void read_actions(team* teams) {
 
         // flip action
         if(check_action(player_action) == flip) {
+            n_of_actions += 1;
             char player_name[1000] = {'\0'};
             fscanf(input, "%s", player_name);
 
@@ -386,6 +389,7 @@ void read_actions(team* teams) {
 
         // heal action
         if(check_action(player_action) == heal) {
+            n_of_actions += 1;
             // read donor's, patient's names
             char donor_name[1000] = {'\0'};
             char patient_name[1000] = {'\0'};
@@ -451,6 +455,7 @@ void read_actions(team* teams) {
 
         // super action
         if(check_action(player_action) == super) {
+            n_of_actions += 1;
             char player1_name[1000] = {'\0'};
             char player2_name[1000] = {'\0'};
             fscanf(input, "%s %s", player1_name, player2_name);
@@ -511,6 +516,10 @@ void read_actions(team* teams) {
             continue;
         }
     }
+    if(n_of_actions > 1000) {
+        error = true;
+        write_to_file(NULL, -1);
+    }
 }
 
 // calculates the winner
@@ -530,7 +539,7 @@ void calculate_winner(team* teams) {
 
     }
     for (team* t = teams; t < teams+n_teams; t++) {
-        if(t->team_total == max && (strcmp(result.head, t->head))) {
+        if(t->team_total == max && (strcmp(result.head, t->head) != 0)) {
             tie = true;
         }
     }

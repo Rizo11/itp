@@ -30,5 +30,3 @@ attack Mohamad Alexandr
 attack Munir Mikhail
 attack Munir Alexandr
 attack Munir Alaa
-heal Munir Munir
-healt Alaa Munir
