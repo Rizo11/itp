@@ -1,0 +1,7 @@
+[
+{
+  "directory": "D:/inno/itp/lab5/build",
+  "command": "C:\\Users\\MSI\\Downloads\\x86_64-8.1.0-release-posix-seh-rt_v6-rev0\\mingw64\\bin\\gcc.exe   -g -o CMakeFiles\\lab5.dir\\main.c.obj -c D:\\inno\\itp\\lab5\\main.c",
+  "file": "D:/inno/itp/lab5/main.c"
+}
+]
