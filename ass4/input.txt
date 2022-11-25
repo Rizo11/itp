@@ -1,0 +1,15 @@
+5
+13
+King White 1 1
+King Black 1 2
+Queen White 1 3
+Queen Black 2 1
+Queen White 2 3
+Pawn White 3 1
+Pawn Black 3 3
+Rook White 4 1
+Rook Black 3 4
+Knight White 3 2
+Knight Black 2 4
+Bishop White 2 2
+Bishop Black 1 4
