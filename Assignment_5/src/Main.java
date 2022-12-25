@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.Scanner;
 
 
-public class Main {
+public final class Main {
+    private Main() { }
     public static final String INPUT = "input.txt";
     private static int days;
     private static float field = 0;
@@ -62,7 +63,7 @@ public class Main {
             }
             field = grassSize;
         } catch (Exception ex) {
-            Exceptions.invalidInputs();
+            Exceptions.grassOutOfBound();
         }
 
 
@@ -72,10 +73,11 @@ public class Main {
             Exceptions.invalidInputs();
         }
 
-        int nOfAnimals = Integer.parseInt(line[0]);
+        int nOfAnimals = 0;
         try {
+            nOfAnimals = Integer.parseInt(line[0]);
             if (nOfAnimals < 1 || nOfAnimals > ANIMAL_LIMIT) {
-                Exceptions.invalidAnimalParams();
+                Exceptions.invalidInputs();
             }
         } catch (Exception e) {
             Exceptions.invalidInputs();
