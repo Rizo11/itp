@@ -7,17 +7,17 @@ import java.util.Scanner;
 
 public class Main {
     public static final String INPUT = "input.txt";
-    public static int days;
+    private static int days;
     private static float field = 0;
-    private static final int LENGTHLIMIT = 1;
+    private static final int LENGTH_LIMIT = 1;
     private static final float HUNDRED = 100;
-    private static final int DAYSLIMIT = 30;
-    private static final int ANIMALSLIMIT = 20;
-    private static final int LINELIMIT = 4;
+    private static final int DAYS_LIMIT = 30;
+    private static final int ANIMAL_LIMIT = 20;
+    private static final int LINE_LIMIT = 4;
     private static final float WEIGHT_AND_SPEED_MIN = 5;
     private static final float WEIGHT_MAX = 200;
     private static final float SPEED_MAX = 60;
-    private static ArrayList<String> ANIMAL_TYPES = new ArrayList<String>() {
+    private static final ArrayList<String> ANIMAL_TYPES = new ArrayList<String>() {
         {
             add("Lion");
             add("Zebra");
@@ -27,7 +27,7 @@ public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
         List<Animal> animals = readAnimals();
-        RunSimulation(field, animals);
+        runSimulation(field, animals);
         printAnimals(animals);
 
     }
@@ -35,17 +35,17 @@ public class Main {
     private static List<Animal> readAnimals() throws FileNotFoundException {
         File file = new File(INPUT);
         Scanner scanner = new Scanner(file);
-        String[] line = null;
+        String[] line;
         ArrayList<Animal> animals = new ArrayList<>();
 
         // Reading number of Days
         line = scanner.nextLine().split(" ");
-        if (line.length != LENGTHLIMIT) {
+        if (line.length != LENGTH_LIMIT) {
             Exceptions.invalidInputs();
         }
         try {
             days = Integer.parseInt(line[0]);
-            if (days < LENGTHLIMIT || days > DAYSLIMIT) {
+            if (days < LENGTH_LIMIT || days > DAYS_LIMIT) {
                 Exceptions.invalidInputs();
             }
         } catch (Exception ex) {
@@ -55,9 +55,6 @@ public class Main {
 
         // Reading size of the grass
         line = scanner.nextLine().split(" ");
-        if (line.length > LENGTHLIMIT) {
-            Exceptions.invalidInputs();
-        }
         try {
             float grassSize = Float.parseFloat(line[0]);
             if (grassSize < 0 || grassSize > HUNDRED) {
@@ -71,13 +68,13 @@ public class Main {
 
         // Read number of animals
         line = scanner.nextLine().split(" ");
-        if (line.length > LENGTHLIMIT) {
+        if (line.length > LENGTH_LIMIT) {
             Exceptions.invalidInputs();
         }
 
         int nOfAnimals = Integer.parseInt(line[0]);
         try {
-            if (nOfAnimals < 1 || nOfAnimals > ANIMALSLIMIT) {
+            if (nOfAnimals < 1 || nOfAnimals > ANIMAL_LIMIT) {
                 Exceptions.invalidAnimalParams();
             }
         } catch (Exception e) {
@@ -86,17 +83,38 @@ public class Main {
 
         // Read animals
         for (int i = 0; i < nOfAnimals; i++) {
+            if (!scanner.hasNext()) {
+                Exceptions.invalidInputs();
+            }
             line = scanner.nextLine().split(" ");
-            if (line.length > LINELIMIT) { Exceptions.invalidAnimalParams(); }
+//            if(line.length == 0) { Exceptions.invalidInputs(); }
+            if (line.length != LINE_LIMIT) {
+                Exceptions.invalidAnimalParams();
+            }
             Animal newAnimal = receiveAnimal(line);
             animals.add(newAnimal);
         }
+        animals.forEach(a -> {
+            if (a.getWeight() < WEIGHT_AND_SPEED_MIN || a.getWeight() > WEIGHT_MAX) {
+                Exceptions.weightOutOfNumbers();
+            }
+        });
+        animals.forEach(a -> {
+            if (a.getSpeed() < WEIGHT_AND_SPEED_MIN || a.getSpeed() > SPEED_MAX) {
+                Exceptions.speedOutOfBounds();
+            }
+        });
+        animals.forEach(a -> {
+            if (a.getEnergy() < 0 || a.getEnergy() > HUNDRED) {
+                Exceptions.energyOutOfBounds();
+            }
+        });
         scanner.close();
 
         return animals;
     }
 
-    private static void RunSimulation(float grass, List<Animal> animals) {
+    private static void runSimulation(float grass, List<Animal> animals) {
         final List<Animal> deadAnimals = new ArrayList<>();
         animals.forEach(a -> {
             if (a.getEnergy() <= 0) {
@@ -104,19 +122,21 @@ public class Main {
             }
         });
 
-        deadAnimals.forEach(a -> animals.remove(a));
+        deadAnimals.forEach(animals::remove);
 
-        Field field = new Field(grass);
+        Field fieldVar = new Field(grass);
         for (int i = 0; i < days; i++) {
             int nOfAnimals = animals.size();
 
             for (int j = 0; j < nOfAnimals; j++) {
                 Animal currentAnimal = animals.get(j);
-                if (currentAnimal.getEnergy() <= 0) {continue;}
-                currentAnimal.eat(animals, field);
+                if (currentAnimal.getEnergy() <= 0) {
+                    continue;
+                }
+                currentAnimal.eat(animals, fieldVar);
             }
 
-            field.grassGrow();
+            fieldVar.grassGrow();
             animals.forEach(a -> {
                 a.setEnergy(1);
                 if (a.getEnergy() <= 0) {
@@ -124,35 +144,32 @@ public class Main {
                 }
             });
 
-            deadAnimals.forEach(a -> animals.remove(a));
+            deadAnimals.forEach(animals::remove);
         }
 
     }
 
     private static void printAnimals(List<Animal> animals) {
-        animals.forEach(a -> a.makeSound());
+        animals.forEach(Animal::makeSound);
     }
 
     private static Animal receiveAnimal(String[] animalData) {
-        Animal newAnimal = null;
+        Animal newAnimal;
         float weight = 0;
         float speed = 0;
         float energy = 0;
+        int weightI = 1;
+        int speedI = 2;
+        final int energyI = 3;
         try {
-            weight = Float.parseFloat(animalData[1]);
-            speed = Float.parseFloat(animalData[2]);
-            energy = Float.parseFloat(animalData[3]);
+            weight = Float.parseFloat(animalData[weightI]);
+            speed = Float.parseFloat(animalData[speedI]);
+            energy = Float.parseFloat(animalData[energyI]);
         } catch (Exception ex) {
             Exceptions.invalidInputs();
         }
-        if (!ANIMAL_TYPES.contains(animalData[0])) { Exceptions.invalidInputs();}
-
-        if (weight < WEIGHT_AND_SPEED_MIN || weight > WEIGHT_MAX) {
-            Exceptions.weightOutOfNumbers();
-        } else if (speed < WEIGHT_AND_SPEED_MIN || speed > SPEED_MAX) {
-            Exceptions.speedOutOfBounds();
-        } else if (energy < 0 || energy > HUNDRED) {
-            Exceptions.energyOutOfBounds();
+        if (!ANIMAL_TYPES.contains(animalData[0])) {
+            Exceptions.invalidInputs();
         }
 
         if (animalData[0].equals("Lion")) {
@@ -204,14 +221,14 @@ public class Main {
 
 class Lion extends Animal implements Carnivore {
 
-    public Lion(float weight, float speed, float energy, String sound) {
+    Lion(float weight, float speed, float energy, String sound) {
         super(weight, speed, energy, sound);
     }
 
     @Override
     void eat(List<Animal> animals, Field field) {
         Animal prey = choosePrey(animals, this);
-        if ( prey != null) {
+        if (prey != null) {
             huntPrey(this, prey);
         }
     }
@@ -219,12 +236,11 @@ class Lion extends Animal implements Carnivore {
     @Override
     public <T extends Animal> Animal choosePrey(List<Animal> animals, T hunter) {
         int huntedIndex = animals.indexOf(hunter);
-        Animal prey = animals.get((huntedIndex + 1)%animals.size());
+        Animal prey = animals.get((huntedIndex + 1) % animals.size());
         if (hunter == prey) {
             Main.Exceptions.selfHunting();
             return null;
-        }
-        else if (hunter.getClass().equals(prey.getClass())) {
+        } else if (hunter.getClass().equals(prey.getClass())) {
             Main.Exceptions.cannibalism();
             return null;
         } else {
@@ -245,7 +261,7 @@ class Lion extends Animal implements Carnivore {
 
 class Zebra extends Animal implements Herbivore {
 
-    public Zebra(float weight, float speed, float energy, String sound) {
+    Zebra(float weight, float speed, float energy, String sound) {
         super(weight, speed, energy, sound);
     }
 
@@ -256,7 +272,7 @@ class Zebra extends Animal implements Herbivore {
 
     @Override
     public void grazeInTheField(Animal eater, Field field) {
-        float gain = (float) (eater.getWeight()/10);
+        float gain = eater.getWeight() / TEN;
         if (field.getGrassAmount() > gain) {
             eater.documentEnergy(gain);
             field.setGrassAmount(gain);
@@ -264,9 +280,8 @@ class Zebra extends Animal implements Herbivore {
     }
 }
 
-class Boar extends Animal implements Herbivore, Carnivore {
-
-    public Boar(float weight, float speed, float energy, String sound) {
+class Boar extends Animal implements Omnivore {
+    Boar(float weight, float speed, float energy, String sound) {
         super(weight, speed, energy, sound);
     }
 
@@ -274,14 +289,14 @@ class Boar extends Animal implements Herbivore, Carnivore {
     void eat(List<Animal> animals, Field field) {
         grazeInTheField(this, field);
         Animal prey = choosePrey(animals, this);
-        if ( prey != null) {
+        if (prey != null) {
             huntPrey(this, prey);
         }
     }
 
     @Override
     public void grazeInTheField(Animal eater, Field field) {
-        float gain = (float) (eater.getWeight()/10);
+        float gain = eater.getWeight() / TEN;
         if (field.getGrassAmount() > gain) {
             eater.documentEnergy(gain);
             field.setGrassAmount(gain);
@@ -291,12 +306,11 @@ class Boar extends Animal implements Herbivore, Carnivore {
     @Override
     public <T extends Animal> Animal choosePrey(List<Animal> animals, T hunter) {
         int huntedIndex = animals.indexOf(hunter);
-        Animal prey = animals.get((huntedIndex + 1)%animals.size());
+        Animal prey = animals.get((huntedIndex + 1) % animals.size());
         if (hunter == prey) {
             Main.Exceptions.selfHunting();
             return null;
-        }
-        else if (hunter.getClass().equals(prey.getClass())) {
+        } else if (hunter.getClass().equals(prey.getClass())) {
             Main.Exceptions.cannibalism();
             return null;
         } else {
@@ -328,30 +342,24 @@ interface Carnivore {
 
 abstract class Animal {
     private final float weight;
-    private float speed;
+    private final float speed;
     private float energy;
+    protected static final float HUNDRED = 100F;
 
-    public void setSpeed(float speed) {
-        this.speed = speed;
+    public void setEnergy(float energyArg) {
+        this.energy = this.energy - energyArg <= 0 ? 0 : this.energy - energyArg;
     }
 
-    public void setEnergy(float energy) {
-        this.energy = this.energy - energy <= 0 ? 0 : this.energy - energy;
-    }
+    private final String sound;
+    protected static final int TEN = 10;
 
-    public void setSound(String sound) {
-        this.sound = sound;
-    }
-
-    private String sound;
-
-    public Animal(float weight, float speed, float energy, String sound) {
-        this.weight = weight;
-        this.speed = speed;
-        this.energy = energy;
-        if (sound.equals("Lion")) {
+    Animal(float weightArg, float speedArg, float energyArg, String soundArg) {
+        this.weight = weightArg;
+        this.speed = speedArg;
+        this.energy = energyArg;
+        if (soundArg.equals("Lion")) {
             this.sound = "Roar";
-        } else if (sound.equals(("Zebra"))) {
+        } else if (soundArg.equals(("Zebra"))) {
             this.sound = "Ihoho";
         } else {
             this.sound = "Oink";
@@ -361,8 +369,8 @@ abstract class Animal {
     public void makeSound() {
         System.out.println(this.sound);
     }
-    public void documentEnergy(float energy) {
-        this.energy = this.energy + energy > 100F ? 100F : this.energy + energy;
+    public void documentEnergy(float energyArg) {
+        this.energy = Math.min(this.energy + energyArg, HUNDRED);
     }
 
     abstract void eat(List<Animal> animals, Field field);
@@ -382,22 +390,23 @@ abstract class Animal {
 
 
 class Field {
+    protected static final float HUNDRED = 100F;
     private float grassAmount;
 
-    public Field(float grassAmount) {
-        this.grassAmount = grassAmount;
+    Field(float grassAmountArg) {
+        this.grassAmount = grassAmountArg;
     }
 
     public void grassGrow() {
-        this.grassAmount = this.grassAmount + this.grassAmount > 100F ? 100F : this.grassAmount + this.grassAmount;
+        this.grassAmount = Math.min(this.grassAmount + this.grassAmount, HUNDRED);
     }
 
     public float getGrassAmount() {
         return grassAmount;
     }
 
-    public void setGrassAmount(float grassAmount) {
+    public void setGrassAmount(float grassAmountArg) {
 
-        this.grassAmount = this.grassAmount - grassAmount <= 0 ? 0 : this.grassAmount - grassAmount;
+        this.grassAmount = this.grassAmount - grassAmountArg <= 0 ? 0 : this.grassAmount - grassAmountArg;
     }
 }
